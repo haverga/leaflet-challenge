@@ -13,10 +13,10 @@ let earthquakeLayer = L.layerGroup().addTo(map);
 
 // Define a function to calculate the color based on depth
 function getColor(depth) {
-    return depth > 300 ? '#800026' :
-        depth > 200 ? '#BD0026' :
-        depth > 100 ? '#E31A1C' :
-        depth > 50  ? '#FC4E2A' :
+    return depth > 90 ? '#800026' :
+        depth > 70 ? '#BD0026' :
+        depth > 50 ? '#E31A1C' :
+        depth > 30  ? '#FC4E2A' :
         depth > 10  ? '#FD8D3C' :
                         '#FFEDA0';
 }
@@ -35,7 +35,7 @@ d3.json(url)
             let marker = L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]], {
                 radius: magnitude * 5,  // Adjust the factor for appropriate size
                 fillColor: getColor(depth),
-                color: '#000',
+                color: getColor(depth),
                 weight: 1,
                 opacity: 1,
                 fillOpacity: 0.8
@@ -56,12 +56,12 @@ d3.json(url)
 
         legend.onAdd = function (map) {
             let div = L.DomUtil.create('div', 'info legend');
-            let depths = [0, 10, 50, 100, 200, 300];
+            let depths = [-10, 10, 30, 50, 70, 90];
             let labels = [];
 
             for (let i = 0; i < depths.length; i++) {
                 div.innerHTML +=
-                    '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
+                    '<i style="background:' + getColor(depths[i] + 1) + ';width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7;"></i> ' +
                     depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
             }
 
@@ -69,5 +69,5 @@ d3.json(url)
         };
 
         legend.addTo(map);
-    })
-    .catch(error => console.error('Error fetching earthquake data:', error));
+    });
+    //.catch(error => console.error('Error fetching earthquake data:', error));
